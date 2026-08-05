@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows x64
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build and audit Windows package
+        run: npm run build
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64
+          path: dist/ChatGPT-Plus-Plus-1.0.0-win-x64.exe
+          if-no-files-found: error
+
+  build-macos:
+    name: Build macOS ARM64
+    runs-on: macos-14
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build, sign, and audit macOS package
+        run: npm run build:mac
+
+      - name: Create macOS release ZIP
+        run: ditto -c -k --sequesterRsrc --keepParent "dist/mac-arm64/ChatGPT++.app" "dist/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip"
+
+      - name: Upload macOS package
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64
+          path: dist/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip
+          if-no-files-found: error
+
+  publish:
+    name: Publish release assets
+    needs:
+      - build-windows
+      - build-macos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
+
+      - name: Generate SHA-256 checksums
+        working-directory: release
+        run: sha256sum ChatGPT-Plus-Plus-1.0.0-win-x64.exe ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip > SHA256SUMS.txt
+
+      - name: Upload assets to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${GITHUB_REF_NAME}" release/ChatGPT-Plus-Plus-1.0.0-win-x64.exe release/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip release/SHA256SUMS.txt --clobber
