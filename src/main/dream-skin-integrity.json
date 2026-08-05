@@ -51,8 +51,8 @@
       "sha256": "f19ab9a969fc51723e091c25e385591dd7d7188482b394801481455ccadcfff0"
     },
     "scripts/stage-theme.mjs": {
-      "size": 4853,
-      "sha256": "3d36743b353022489a834c8b89ff5f078e5fef5dd3a04c4f5d9e3cb7f20afbd7"
+      "size": 5305,
+      "sha256": "8e5c269e9cb2c9c4449827cfe1f978a754afbaf4205e3bf7420515de0e110ac9"
     },
     "scripts/start-dream-skin-macos.sh": {
       "size": 8937,
