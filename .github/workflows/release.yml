@@ -6,7 +6,7 @@ on:
       tag:
         description: Existing release tag to receive the assets
         required: true
-        default: v1.0
+        default: v1.1.0
   push:
     tags:
       - "v*"
@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-x64
-          path: dist/ChatGPT-Plus-Plus-1.0.0-win-x64.exe
+          path: dist/ChatGPT-Plus-Plus-1.1.0-win-x64.exe
           if-no-files-found: error
 
   build-macos:
@@ -67,13 +67,13 @@ jobs:
         run: npm run build:mac
 
       - name: Create macOS release ZIP
-        run: ditto -c -k --sequesterRsrc --keepParent "dist/mac-arm64/ChatGPT++.app" "dist/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip"
+        run: ditto -c -k --sequesterRsrc --keepParent "dist/mac-arm64/ChatGPT++.app" "dist/ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip"
 
       - name: Upload macOS package
         uses: actions/upload-artifact@v4
         with:
           name: macos-arm64
-          path: dist/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip
+          path: dist/ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip
           if-no-files-found: error
 
   publish:
@@ -91,11 +91,11 @@ jobs:
 
       - name: Generate SHA-256 checksums
         working-directory: release
-        run: sha256sum ChatGPT-Plus-Plus-1.0.0-win-x64.exe ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip > SHA256SUMS.txt
+        run: sha256sum ChatGPT-Plus-Plus-1.1.0-win-x64.exe ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip > SHA256SUMS.txt
 
       - name: Upload assets to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
-        run: gh release upload "${RELEASE_TAG}" release/ChatGPT-Plus-Plus-1.0.0-win-x64.exe release/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip release/SHA256SUMS.txt --clobber
+        run: gh release upload "${RELEASE_TAG}" release/ChatGPT-Plus-Plus-1.1.0-win-x64.exe release/ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip release/SHA256SUMS.txt --clobber
