@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:" />
+    <title>ChatGPT主题</title>
+    <link rel="stylesheet" href="./theme-menu.css" />
+  </head>
+  <body>
+    <main class="theme-shell">
+      <section class="theme-panel" aria-label="ChatGPT主题操作">
+        <header>
+          <div>
+            <p class="eyebrow">CHATGPT DREAM SKIN</p>
+            <h1>ChatGPT主题</h1>
+          </div>
+          <span id="serviceDot" class="service-dot" data-level="idle" aria-hidden="true"></span>
+        </header>
+
+        <section class="service-card" aria-live="polite">
+          <strong id="serviceLabel">正在检查主题服务…</strong>
+          <p id="serviceMessage">请稍候</p>
+          <button id="repairBtn" class="compact-button" type="button" hidden>修复</button>
+        </section>
+
+        <nav class="theme-actions" aria-label="主题操作">
+          <button class="theme-row" type="button" data-action="reload">
+            <span class="action-icon">↻</span><span>重新加载</span>
+          </button>
+          <button class="theme-row" type="button" data-action="restore">
+            <span class="action-icon">◌</span><span>恢复默认</span>
+          </button>
+          <button id="newThemeBtn" class="theme-row" type="button">
+            <span class="action-icon">＋</span><span>新建主题</span>
+          </button>
+          <button id="savedThemesBtn" class="theme-row saved-row" type="button" aria-expanded="false">
+            <span class="action-icon">▣</span><span>已保存主题</span><span class="chevron">›</span>
+          </button>
+        </nav>
+
+        <form id="newThemeForm" class="new-theme-form" hidden>
+          <label for="themeNameInput">主题名称</label>
+          <div>
+            <input id="themeNameInput" maxlength="80" placeholder="例如：我的新主题" />
+            <button type="submit">选图并应用</button>
+          </div>
+        </form>
+
+        <p id="actionMessage" class="action-message" aria-live="polite"></p>
+      </section>
+
+      <section id="savedPanel" class="saved-panel" aria-label="已保存主题" hidden>
+        <header>
+          <div><p class="eyebrow">THEME LIBRARY</p><h2>已保存主题</h2></div>
+          <span id="themeCount" class="theme-count">0</span>
+        </header>
+        <div id="themeList" class="theme-list"></div>
+        <p id="emptyThemes" class="empty-themes" hidden>还没有已保存主题</p>
+      </section>
+    </main>
+    <script src="./theme-menu.js"></script>
+  </body>
+</html>

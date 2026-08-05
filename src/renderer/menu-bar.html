@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:" />
+    <title>ChatGPT++</title>
+    <link rel="stylesheet" href="./menu-bar.css" />
+  </head>
+  <body>
+    <main class="popover">
+      <header class="app-header">
+        <img src="../../assets/icon.png" alt="" />
+        <div class="header-copy">
+          <h1>ChatGPT++</h1>
+          <p class="identity-line"><span id="currentIdentity">正在读取账号…</span><i>·</i><b id="currentPlan">--</b></p>
+          <p id="accountMeta">订阅信息读取中</p>
+        </div>
+      </header>
+
+      <section class="quota-summary" aria-live="polite">
+        <div class="summary-heading">
+          <span id="summaryLabel">7天剩余额度</span>
+          <strong id="summaryPercent">--%</strong>
+        </div>
+        <div id="currentAccount" class="account-row current-account"></div>
+        <button id="allAccountsBtn" class="all-accounts-toggle" type="button" aria-expanded="false">
+          <span>全部账号</span>
+          <span class="account-count" id="accountCount">0</span>
+          <span class="disclosure" aria-hidden="true">›</span>
+        </button>
+        <div id="accountList" class="account-list" hidden></div>
+        <div id="accountActions" class="account-actions" hidden>
+          <button id="addAccountBtn" class="add-account" type="button">＋ 添加账号</button>
+          <button id="importAccountBtn" class="import-account" type="button">导入 auth.json</button>
+        </div>
+      </section>
+
+      <p id="statusMessage" class="status-message" hidden></p>
+
+      <section class="action-list primary-actions">
+        <button id="toggleWidgetBtn" class="menu-row" type="button">
+          <span class="row-icon" aria-hidden="true">▣</span>
+          <span id="toggleWidgetText">显示小组件</span>
+        </button>
+        <button id="refreshBtn" class="menu-row" type="button">
+          <span class="row-icon refresh-icon" aria-hidden="true">↻</span>
+          <span>刷新额度</span>
+        </button>
+        <button id="themeBtn" class="menu-row theme-entry" type="button" aria-haspopup="true">
+          <span id="themeStatusDot" class="theme-status-dot" data-level="idle" aria-hidden="true"></span>
+          <span>ChatGPT主题</span>
+          <span id="themeStatusText" class="theme-status-text">检查中</span>
+          <span class="entry-chevron" aria-hidden="true">›</span>
+        </button>
+      </section>
+
+      <fieldset class="settings-group source-group">
+        <legend>菜单栏百分比</legend>
+        <label class="menu-row option-row"><input type="radio" name="quotaSource" value="weekly" /><span>7天</span></label>
+        <label class="menu-row option-row"><input type="radio" name="quotaSource" value="fiveHour" /><span>5小时</span></label>
+      </fieldset>
+
+      <section class="settings-group">
+        <label class="menu-row option-row auto-launch-row"><input id="autoLaunchInput" type="checkbox" /><span>开机自启动</span></label>
+        <label class="menu-row select-row">
+          <span>刷新间隔</span>
+          <select id="refreshIntervalInput" aria-label="刷新间隔">
+            <option value="1">1 分钟</option><option value="5">5 分钟</option><option value="15">15 分钟</option><option value="30">30 分钟</option><option value="60">60 分钟</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="action-list quit-group">
+        <button id="quitBtn" class="menu-row quit-row" type="button"><span class="row-icon" aria-hidden="true">⏻</span><span>退出 ChatGPT++</span></button>
+      </section>
+    </main>
+    <script src="./widget-logic.js"></script>
+    <script src="./menu-bar.js"></script>
+  </body>
+</html>

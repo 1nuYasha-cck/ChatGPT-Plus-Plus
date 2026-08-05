@@ -1,0 +1,106 @@
+{
+  "name": "chatgpt-plus-plus",
+  "version": "1.0.0",
+  "description": "Desktop Codex quota monitor with local plaintext multi-account switching.",
+  "main": "src/main/main.js",
+  "author": "ChatGPT++ Contributors",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "electron .",
+    "start": "electron .",
+    "build": "electron-builder --win portable --x64 && node scripts/audit-package-privacy.js --win",
+    "build:dir": "electron-builder --dir --win --x64",
+    "build:mac": "electron-builder --mac dir --arm64 && codesign --force --deep --sign - --identifier cn.chatgptplusplus.desktop --timestamp=none \"dist/mac-arm64/ChatGPT++.app\" && node scripts/audit-package-privacy.js --mac",
+    "qa:menu": "electron scripts/qa-menu-preview.js",
+    "qa:theme": "electron scripts/qa-theme-preview.js",
+    "audit:privacy": "node scripts/audit-package-privacy.js",
+    "test": "node --test"
+  },
+  "build": {
+    "appId": "cn.chatgptplusplus.desktop",
+    "productName": "ChatGPT++",
+    "afterPack": "scripts/after-pack.js",
+    "electronFuses": {
+      "runAsNode": false,
+      "enableCookieEncryption": true,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true,
+      "grantFileProtocolExtraPrivileges": true
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/icon.*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "vendor/codex-dream-skin-studio",
+        "to": "codex-dream-skin-studio",
+        "filter": [
+          "assets/dream-skin.css",
+          "assets/renderer-inject.js",
+          "presets/preset-*/background.jpg",
+          "presets/preset-*/theme.json",
+          "scripts/common-macos.sh",
+          "scripts/image-metadata.mjs",
+          "scripts/injector.mjs",
+          "scripts/load-image-theme-macos.sh",
+          "scripts/prepare-theme-image.jxa",
+          "scripts/restore-dream-skin-macos.sh",
+          "scripts/stage-theme.mjs",
+          "scripts/start-dream-skin-macos.sh",
+          "scripts/status-dream-skin-macos.sh",
+          "scripts/switch-theme-macos.sh",
+          "scripts/theme-config.mjs",
+          "scripts/write-theme.mjs"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "signExecutable": false,
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "ChatGPT-Plus-Plus-${version}-win-x64.exe"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "assets/icon.icns",
+      "identity": null,
+      "extendInfo": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSAllowsLocalNetworking": true
+        }
+      },
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "artifactName": "ChatGPT-Plus-Plus-${version}-mac-arm64.${ext}"
+    }
+  },
+  "devDependencies": {
+    "electron": "43.2.0",
+    "electron-builder": "^26.15.3",
+    "plist": "^3.1.0"
+  }
+}

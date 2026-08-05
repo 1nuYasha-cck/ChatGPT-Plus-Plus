@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "sha256",
+  "files": {
+    "assets/dream-skin.css": {
+      "size": 43654,
+      "sha256": "514b38a2033a5b8a951a5b185fa034a379412ec2ed98a3b138cc0ab317874c71"
+    },
+    "assets/renderer-inject.js": {
+      "size": 35809,
+      "sha256": "e28428a1023dd06e987a8f7a73e7dfbb14c35ec1e83774b41100f02f880b4c19"
+    },
+    "presets/preset-arina-hashimoto/background.jpg": {
+      "size": 687943,
+      "sha256": "89ff8fdcd23e26e17aaeb4a3f4de92ab45a23563153ff516f0b887af2fdeb94f"
+    },
+    "presets/preset-arina-hashimoto/theme.json": {
+      "size": 499,
+      "sha256": "04c5766fda1bbb19a657cebbdbd6663db0ff1acce600e31525914d7c4add90fe"
+    },
+    "presets/preset-gothic-void-crusade/background.jpg": {
+      "size": 806882,
+      "sha256": "e2eb6f840219c170ef3b2f7b3e545ff2325a6152ea52947e9d088bab98c6fdba"
+    },
+    "presets/preset-gothic-void-crusade/theme.json": {
+      "size": 949,
+      "sha256": "fd250dc6c0ec1eea724f59a86c7c126a6bd9b90798289483a00948d57e23e52e"
+    },
+    "scripts/common-macos.sh": {
+      "size": 36281,
+      "sha256": "111c7402c4fe441730c0a4ec136b10e5734c1af2f52a29ad6288b78236291362"
+    },
+    "scripts/image-metadata.mjs": {
+      "size": 4730,
+      "sha256": "dfab5e726a7cf95f19c55f7f639659e2c70ebdd87cfb046bf18d67f692321a6a"
+    },
+    "scripts/injector.mjs": {
+      "size": 75138,
+      "sha256": "e5c94897dc3a25295d6cc2dc23885227b6120190ffcb73dcc2daa5006004c0f8"
+    },
+    "scripts/load-image-theme-macos.sh": {
+      "size": 6206,
+      "sha256": "254c892f1465f73337a8112af6b15319820b2007a21c738a17a5e308c4aecbcc"
+    },
+    "scripts/prepare-theme-image.jxa": {
+      "size": 5796,
+      "sha256": "97ccef12464584f010a1f27f7d7c669c13921e050beeb30a263dd3a74b13fd93"
+    },
+    "scripts/restore-dream-skin-macos.sh": {
+      "size": 2476,
+      "sha256": "f19ab9a969fc51723e091c25e385591dd7d7188482b394801481455ccadcfff0"
+    },
+    "scripts/stage-theme.mjs": {
+      "size": 4853,
+      "sha256": "3d36743b353022489a834c8b89ff5f078e5fef5dd3a04c4f5d9e3cb7f20afbd7"
+    },
+    "scripts/start-dream-skin-macos.sh": {
+      "size": 8937,
+      "sha256": "babe8c3c32fb5666b38688d7bdc4f621b69c04bee76d8ae257d2ad8ac2f3c8b0"
+    },
+    "scripts/status-dream-skin-macos.sh": {
+      "size": 10189,
+      "sha256": "6d1b43f1923e0786714acdfe5d1cbf5688b817b37bd6e6f5852ed52f5223f263"
+    },
+    "scripts/switch-theme-macos.sh": {
+      "size": 4490,
+      "sha256": "d0bdee5d715af94057a66648ee0296e44da07515a378d7e0c17d35233473af07"
+    },
+    "scripts/theme-config.mjs": {
+      "size": 11257,
+      "sha256": "a1ad340c6b19c8ca4f85f2f935c709a9b17cfb1b5772f029e80d9c0a96d89153"
+    },
+    "scripts/write-theme.mjs": {
+      "size": 6496,
+      "sha256": "367d9f8185f8559a99a3a544bc64d87c4babc5b83b67a132a38921257766f235"
+    }
+  }
+}

@@ -1,0 +1,182 @@
+#!/usr/bin/osascript -l JavaScript
+
+ObjC.import("AppKit");
+ObjC.import("CoreImage");
+ObjC.import("Foundation");
+
+const TARGET_WIDTH = 2560;
+const TARGET_HEIGHT = 1440;
+const TARGET_RATIO = TARGET_WIDTH / TARGET_HEIGHT;
+const CANVAS_WIDTH = 1280;
+const CANVAS_HEIGHT = 720;
+
+function fail(message) {
+  throw new Error(`Theme image preparation failed: ${message}`);
+}
+
+function number(value) {
+  return Number(ObjC.unwrap(value));
+}
+
+function pixelSize(image) {
+  const representations = image.representations;
+  let width = 0;
+  let height = 0;
+  for (let index = 0; index < number(representations.count); index += 1) {
+    const representation = representations.objectAtIndex(index);
+    width = Math.max(width, number(representation.pixelsWide));
+    height = Math.max(height, number(representation.pixelsHigh));
+  }
+  if (width < 1 || height < 1) {
+    const size = image.size;
+    width = number(size.width);
+    height = number(size.height);
+  }
+  return { width, height };
+}
+
+function newCanvas(width = CANVAS_WIDTH, height = CANVAS_HEIGHT) {
+  return $.NSImage.alloc.initWithSize($.NSMakeSize(width, height));
+}
+
+function withCanvas(canvas, draw) {
+  canvas.lockFocus;
+  const context = $.NSGraphicsContext.currentContext;
+  context.imageInterpolation = $.NSImageInterpolationHigh;
+  draw();
+  canvas.unlockFocus;
+  return canvas;
+}
+
+function drawImage(image, destination, source, opacity = 1) {
+  image.drawInRectFromRectOperationFraction(
+    destination,
+    source,
+    $.NSCompositingOperationSourceOver,
+    opacity,
+  );
+}
+
+function sourceRectForCover(width, height) {
+  const ratio = width / height;
+  if (ratio > TARGET_RATIO) {
+    const cropWidth = height * TARGET_RATIO;
+    return $.NSMakeRect((width - cropWidth) / 2, 0, cropWidth, height);
+  }
+  const cropHeight = width / TARGET_RATIO;
+  return $.NSMakeRect(0, (height - cropHeight) / 2, width, cropHeight);
+}
+
+function destinationRectForContain(width, height) {
+  const scale = Math.min(CANVAS_WIDTH / width, CANVAS_HEIGHT / height);
+  const outputWidth = width * scale;
+  const outputHeight = height * scale;
+  return $.NSMakeRect(
+    (CANVAS_WIDTH - outputWidth) / 2,
+    (CANVAS_HEIGHT - outputHeight) / 2,
+    outputWidth,
+    outputHeight,
+  );
+}
+
+function blurredCover(image, sourceSize) {
+  const base = withCanvas(newCanvas(), () => {
+    drawImage(
+      image,
+      $.NSMakeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
+      sourceRectForCover(sourceSize.width, sourceSize.height),
+    );
+  });
+  const input = $.CIImage.imageWithData(base.TIFFRepresentation);
+  if (!input) return base;
+
+  const clamp = $.CIFilter.filterWithName("CIAffineClamp");
+  clamp.setDefaults;
+  clamp.setValueForKey(input, "inputImage");
+  clamp.setValueForKey(
+    $.NSValue.valueWithCGAffineTransform($.CGAffineTransformIdentity),
+    "inputTransform",
+  );
+  const blur = $.CIFilter.filterWithName("CIGaussianBlur");
+  blur.setDefaults;
+  blur.setValueForKey(clamp.valueForKey("outputImage"), "inputImage");
+  blur.setValueForKey(34, "inputRadius");
+
+  const output = blur.valueForKey("outputImage");
+  const context = $.CIContext.contextWithOptions($({}));
+  const cgImage = context.createCGImageFromRect(
+    output,
+    $.CGRectMake(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
+  );
+  if (!cgImage) return base;
+  return $.NSImage.alloc.initWithCGImageSize(
+    cgImage,
+    $.NSMakeSize(CANVAS_WIDTH, CANVAS_HEIGHT),
+  );
+}
+
+function writeJpeg(image, outputPath) {
+  const bitmap = $.NSBitmapImageRep.imageRepWithData(image.TIFFRepresentation);
+  if (!bitmap) fail("could not create the JPEG bitmap");
+  const properties = $.NSMutableDictionary.dictionary;
+  properties.setObjectForKey(0.85, $.NSImageCompressionFactor);
+  const data = bitmap.representationUsingTypeProperties(
+    $.NSBitmapImageFileTypeJPEG,
+    properties,
+  );
+  if (!data || !data.writeToFileAtomically($(outputPath), true)) {
+    fail("could not write the prepared JPEG");
+  }
+}
+
+function run(argv) {
+  if (argv.length !== 2) fail("expected input and output paths");
+  const inputPath = String(argv[0]);
+  const outputPath = String(argv[1]);
+  const source = $.NSImage.alloc.initWithContentsOfFile($(inputPath));
+  if (!source) fail("the selected image could not be decoded");
+  const sourceSize = pixelSize(source);
+  if (sourceSize.width < 1 || sourceSize.height < 1) fail("invalid source dimensions");
+
+  const sourceRatio = sourceSize.width / sourceSize.height;
+  const useBlurredFill = sourceRatio < 1.08;
+  const outputScale = useBlurredFill
+    ? Math.min(TARGET_WIDTH / sourceSize.width, TARGET_HEIGHT / sourceSize.height)
+    : Math.max(TARGET_WIDTH / sourceSize.width, TARGET_HEIGHT / sourceSize.height);
+  let output;
+  if (useBlurredFill) {
+    const background = blurredCover(source, sourceSize);
+    output = withCanvas(newCanvas(), () => {
+      drawImage(
+        background,
+        $.NSMakeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
+        $.NSMakeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
+      );
+      $.NSColor.colorWithCalibratedWhiteAlpha(0, 0.18).set;
+      $.NSBezierPath.fillRect($.NSMakeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT));
+      drawImage(
+        source,
+        destinationRectForContain(sourceSize.width, sourceSize.height),
+        $.NSMakeRect(0, 0, sourceSize.width, sourceSize.height),
+      );
+    });
+  } else {
+    output = withCanvas(newCanvas(), () => {
+      drawImage(
+        source,
+        $.NSMakeRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
+        sourceRectForCover(sourceSize.width, sourceSize.height),
+      );
+    });
+  }
+
+  writeJpeg(output, outputPath);
+  return JSON.stringify({
+    width: TARGET_WIDTH,
+    height: TARGET_HEIGHT,
+    sourceWidth: sourceSize.width,
+    sourceHeight: sourceSize.height,
+    layout: useBlurredFill ? "blurred-contain" : "cover-crop",
+    lowResolution: outputScale > 1.5,
+  });
+}
