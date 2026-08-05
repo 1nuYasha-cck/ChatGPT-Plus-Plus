@@ -30,6 +30,8 @@ function sameStat(left, right) {
 }
 
 async function readStableFile(filePath, label, maxBytes) {
+  const pathBeforeOpen = await fs.lstat(filePath);
+  if (pathBeforeOpen.isSymbolicLink()) throw new Error(`${label} must not be a symbolic link`);
   let handle;
   try {
     handle = await fs.open(filePath, OPEN_FLAGS);
@@ -39,7 +41,12 @@ async function readStableFile(filePath, label, maxBytes) {
   }
   try {
     const before = await handle.stat();
+    const pathAfterOpen = await fs.lstat(filePath);
+    if (pathAfterOpen.isSymbolicLink()) throw new Error(`${label} must not be a symbolic link`);
     if (!before.isFile()) throw new Error(`${label} must be a regular file`);
+    if (!sameStat(pathBeforeOpen, before) || !sameStat(pathAfterOpen, before)) {
+      throw new Error(`${label} changed while it was being opened`);
+    }
     if (before.size > maxBytes) throw new Error(`${label} is larger than ${maxBytes} bytes`);
     const bytes = await handle.readFile();
     const after = await handle.stat();
