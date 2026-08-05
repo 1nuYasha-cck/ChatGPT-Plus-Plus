@@ -1,6 +1,12 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to receive the assets
+        required: true
+        default: v1.0
   push:
     tags:
       - "v*"
@@ -90,4 +96,5 @@ jobs:
       - name: Upload assets to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${GITHUB_REF_NAME}" release/ChatGPT-Plus-Plus-1.0.0-win-x64.exe release/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip release/SHA256SUMS.txt --clobber
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: gh release upload "${RELEASE_TAG}" release/ChatGPT-Plus-Plus-1.0.0-win-x64.exe release/ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip release/SHA256SUMS.txt --clobber

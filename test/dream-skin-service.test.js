@@ -41,8 +41,9 @@ test("theme service status distinguishes healthy, idle, and repairable failures"
 });
 
 test("packaged engine resolves from app resources", () => {
+  const resourcesPath = "/Applications/Quota.app/Contents/Resources";
   assert.equal(
-    resolveEngineRoot({ packaged: true, resourcesPath: "/Applications/Quota.app/Contents/Resources" }),
-    "/Applications/Quota.app/Contents/Resources/codex-dream-skin-studio"
+    resolveEngineRoot({ packaged: true, resourcesPath }),
+    path.join(resourcesPath, "codex-dream-skin-studio")
   );
 });

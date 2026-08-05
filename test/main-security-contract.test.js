@@ -80,7 +80,7 @@ test("native restart dialogs stay attached to a visible parent and block menu au
   assert.match(main, /isUsableWindow\(menuBarWindow\) && menuBarWindow\.isVisible\(\)/);
   assert.match(main, /nativeDialogDepth \+= 1/);
   assert.match(main, /nativeDialogDepth = Math\.max\(0, nativeDialogDepth - 1\)/);
-  assert.match(main, /clearTimeout\(hideMenuWindowsTimer\);\n  nativeDialogDepth \+= 1/);
+  assert.match(main, /clearTimeout\(hideMenuWindowsTimer\);\r?\n  nativeDialogDepth \+= 1/);
 });
 
 test("theme menu is vertically anchored to the clicked theme button", () => {
