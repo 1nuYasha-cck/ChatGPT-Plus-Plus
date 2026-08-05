@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.0"><img alt="Release" src="https://img.shields.io/badge/release-v1.0-34C98F?style=for-the-badge" /></a>
+  <a href="https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.1.0"><img alt="Release" src="https://img.shields.io/badge/release-v1.1.0-34C98F?style=for-the-badge" /></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20x64%20%7C%20macOS%20ARM64-2563EB?style=for-the-badge" />
   <img alt="License" src="https://img.shields.io/badge/license-MIT-111827?style=for-the-badge" />
 </p>
@@ -24,12 +24,12 @@
 
 ## 下载
 
-前往 [ChatGPT++ v1.0 Release](https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.0)：
+前往 [ChatGPT++ v1.1.0 Release](https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.1.0)：
 
 | 平台 | 文件 | 使用方式 |
 | --- | --- | --- |
-| Windows x64 | `ChatGPT-Plus-Plus-1.0.0-win-x64.exe` | 免安装，双击运行 |
-| Apple Silicon Mac | `ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip` | 解压后打开 `ChatGPT++.app` |
+| Windows x64 | `ChatGPT-Plus-Plus-1.1.0-win-x64.exe` | 免安装，双击运行 |
+| Apple Silicon Mac | `ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip` | 解压后打开 `ChatGPT++.app` |
 
 Windows 包暂未签名，Mac 包使用 ad-hoc 本地签名。首次启动可能需要在系统安全设置中确认来源。
 
@@ -75,6 +75,7 @@ Windows 包暂未签名，Mac 包使用 ad-hoc 本地签名。首次启动可能
 
 ### ChatGPT 主题
 
+- 1.1.0 修复重新安装后可能误报“主题服务缺失”的完整性清单问题。
 - 主题入口改为点击后打开，避免鼠标悬停误触。
 - 主题菜单按被点击按钮的实际坐标定位，并随内容动态收缩，减少底部空白。
 - 支持主题状态检查、已有主题切换和自定义主题工作流。
