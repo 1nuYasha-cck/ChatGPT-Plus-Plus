@@ -1,6 +1,6 @@
 {
   "name": "chatgpt-plus-plus",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Desktop Codex quota monitor with local plaintext multi-account switching.",
   "main": "src/main/main.js",
   "author": "ChatGPT++ Contributors",
@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "electron .",
     "start": "electron .",
-    "build": "electron-builder --win portable --x64 && node scripts/audit-package-privacy.js --win",
-    "build:dir": "electron-builder --dir --win --x64",
-    "build:mac": "electron-builder --mac dir --arm64 && codesign --force --deep --sign - --identifier cn.chatgptplusplus.desktop --timestamp=none \"dist/mac-arm64/ChatGPT++.app\" && node scripts/audit-package-privacy.js --mac",
+    "prepare:theme-integrity": "node vendor/codex-dream-skin-studio/scripts/generate-integrity-manifest.mjs",
+    "build": "npm run prepare:theme-integrity && electron-builder --win portable --x64 && node scripts/audit-package-privacy.js --win",
+    "build:dir": "npm run prepare:theme-integrity && electron-builder --dir --win --x64",
+    "build:mac": "npm run prepare:theme-integrity && electron-builder --mac dir --arm64 && codesign --force --deep --sign - --identifier cn.chatgptplusplus.desktop --timestamp=none \"dist/mac-arm64/ChatGPT++.app\" && node scripts/audit-package-privacy.js --mac",
     "qa:menu": "electron scripts/qa-menu-preview.js",
     "qa:theme": "electron scripts/qa-theme-preview.js",
     "audit:privacy": "node scripts/audit-package-privacy.js",
