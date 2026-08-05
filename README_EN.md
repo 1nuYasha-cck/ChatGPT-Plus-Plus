@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.0"><img alt="Release" src="https://img.shields.io/badge/release-v1.0-34C98F?style=for-the-badge" /></a>
+  <a href="https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.1.0"><img alt="Release" src="https://img.shields.io/badge/release-v1.1.0-34C98F?style=for-the-badge" /></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20x64%20%7C%20macOS%20ARM64-2563EB?style=for-the-badge" />
   <img alt="License" src="https://img.shields.io/badge/license-MIT-111827?style=for-the-badge" />
 </p>
@@ -24,12 +24,12 @@
 
 ## Download
 
-Open the [ChatGPT++ v1.0 Release](https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.0):
+Open the [ChatGPT++ v1.1.0 Release](https://github.com/1nuYasha-cck/ChatGPT-Plus-Plus/releases/tag/v1.1.0):
 
 | Platform | File | Usage |
 | --- | --- | --- |
-| Windows x64 | `ChatGPT-Plus-Plus-1.0.0-win-x64.exe` | Portable; run directly |
-| Apple Silicon Mac | `ChatGPT-Plus-Plus-1.0.0-mac-arm64.zip` | Extract and open `ChatGPT++.app` |
+| Windows x64 | `ChatGPT-Plus-Plus-1.1.0-win-x64.exe` | Portable; run directly |
+| Apple Silicon Mac | `ChatGPT-Plus-Plus-1.1.0-mac-arm64.zip` | Extract and open `ChatGPT++.app` |
 
 The Windows package is currently unsigned. The Mac package uses an ad-hoc local signature. Your operating system may request manual approval on first launch.
 
@@ -75,6 +75,7 @@ The screenshots below use demo data and contain no real user account information
 
 ### ChatGPT themes
 
+- v1.1.0 fixes an integrity-manifest mismatch that could incorrectly report “Theme service missing” after reinstalling.
 - Opens the theme menu on click instead of hover.
 - Anchors the popup to the actual clicked row and resizes it to content to remove extra blank space.
 - Supports theme health checks, saved-theme switching, and custom theme workflows.
