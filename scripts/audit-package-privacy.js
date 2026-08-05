@@ -50,7 +50,7 @@ function auditAsar(archivePath, findings) {
   const entries = asar.listPackage(archivePath);
   let fileCount = 0;
   for (const entry of entries) {
-    const normalized = entry.replace(/^\/+/, "");
+    const normalized = entry.replaceAll("\\", "/").replace(/^\/+/, "");
     assertSafeEntryName(normalized, findings);
     const stat = asar.statFile(archivePath, normalized);
     if (stat.link) {
