@@ -3,7 +3,13 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
-const { listSavedThemes, mapThemeStatus, resolveEngineRoot } = require("../src/main/dream-skin-service");
+const {
+  listSavedThemes,
+  mapThemeStatus,
+  resolveEngineRoot,
+  verifyEngineIntegrity
+} = require("../src/main/dream-skin-service");
+const engineIntegrityManifest = require("../src/main/dream-skin-integrity.json");
 
 const validJpeg = fs.readFileSync(path.join(__dirname, "../vendor/codex-dream-skin-studio/presets/preset-arina-hashimoto/background.jpg"));
 
@@ -46,4 +52,9 @@ test("packaged engine resolves from app resources", () => {
     resolveEngineRoot({ packaged: true, resourcesPath }),
     path.join(resourcesPath, "codex-dream-skin-studio")
   );
+});
+
+test("bundled theme engine matches its integrity manifest", () => {
+  const engineRoot = path.join(__dirname, "../vendor/codex-dream-skin-studio");
+  assert.equal(verifyEngineIntegrity(engineRoot, engineIntegrityManifest), true);
 });
