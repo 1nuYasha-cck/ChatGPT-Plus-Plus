@@ -129,11 +129,16 @@ IMAGE_LOAD_HOME="$TMP/image-load-home"
 IMAGE_LOAD_ROOT="$IMAGE_LOAD_HOME/Library/Application Support/CodexDreamSkinStudio"
 [ -n "$(/usr/bin/find "$IMAGE_LOAD_ROOT/images" -maxdepth 1 \
   -name 'img-*-original.jpg' -type f -print -quit)" ]
-[ -f "$IMAGE_LOAD_ROOT/theme/background.jpg" ]
+IMAGE_LOAD_NAME="$("$NODE" -e '
+  const theme = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+  if (typeof theme.image !== "string" || !/^background-img-[A-Za-z0-9_-]+\.jpg$/.test(theme.image)) process.exit(1);
+  process.stdout.write(theme.image);
+' "$IMAGE_LOAD_ROOT/theme/theme.json")"
+[ -f "$IMAGE_LOAD_ROOT/theme/$IMAGE_LOAD_NAME" ]
 [ -z "$(/usr/bin/find "$IMAGE_LOAD_ROOT/theme" -maxdepth 1 -name '.background.*' -print -quit)" ]
-[ "$(/usr/bin/sips -g pixelWidth "$IMAGE_LOAD_ROOT/theme/background.jpg" \
+[ "$(/usr/bin/sips -g pixelWidth "$IMAGE_LOAD_ROOT/theme/$IMAGE_LOAD_NAME" \
   | /usr/bin/awk '/pixelWidth:/{print $2}')" = "2560" ]
-[ "$(/usr/bin/sips -g pixelHeight "$IMAGE_LOAD_ROOT/theme/background.jpg" \
+[ "$(/usr/bin/sips -g pixelHeight "$IMAGE_LOAD_ROOT/theme/$IMAGE_LOAD_NAME" \
   | /usr/bin/awk '/pixelHeight:/{print $2}')" = "1440" ]
 
 # Standalone archives flatten macos/ to their root. Prompt guides and NOTICE
