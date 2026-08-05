@@ -1,0 +1,6 @@
+vendor/codex-dream-skin-studio/**/*.css text eol=lf
+vendor/codex-dream-skin-studio/**/*.js text eol=lf
+vendor/codex-dream-skin-studio/**/*.json text eol=lf
+vendor/codex-dream-skin-studio/**/*.jxa text eol=lf
+vendor/codex-dream-skin-studio/**/*.mjs text eol=lf
+vendor/codex-dream-skin-studio/**/*.sh text eol=lf
