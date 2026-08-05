@@ -17,6 +17,9 @@ test("packaging uses explicit product allowlists instead of copying the workspac
   assert.match(packageJson.scripts["build:mac"], /audit-package-privacy\.js --mac/);
   const auditSource = fs.readFileSync(path.join(projectRoot, "scripts/audit-package-privacy.js"), "utf8");
   assert.ok(auditSource.includes('entry.replaceAll("\\\\", "/")'));
+  assert.ok(auditSource.includes('entry.replace(/^[\\\\/]+/, "")'));
+  assert.ok(auditSource.includes("asar.statFile(archivePath, archiveEntry)"));
+  assert.ok(auditSource.includes("asar.extractFile(archivePath, archiveEntry)"));
 });
 
 test("first-run account and settings data resolve from the current machine", () => {

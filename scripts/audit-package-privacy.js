@@ -50,16 +50,20 @@ function auditAsar(archivePath, findings) {
   const entries = asar.listPackage(archivePath);
   let fileCount = 0;
   for (const entry of entries) {
+    const archiveEntry = entry.replace(/^[\\/]+/, "");
     const normalized = entry.replaceAll("\\", "/").replace(/^\/+/, "");
     assertSafeEntryName(normalized, findings);
-    const stat = asar.statFile(archivePath, normalized);
+    // @electron/asar returns platform-native entry names. Keep that original
+    // value for archive access, and use the normalized value only for checks
+    // and portable report labels.
+    const stat = asar.statFile(archivePath, archiveEntry);
     if (stat.link) {
       findings.push(`app.asar/${normalized}: packaged symlink`);
       continue;
     }
     if (stat.files) continue;
     fileCount += 1;
-    scanControlledFile(asar.extractFile(archivePath, normalized), `app.asar/${normalized}`, findings);
+    scanControlledFile(asar.extractFile(archivePath, archiveEntry), `app.asar/${normalized}`, findings);
   }
   return fileCount;
 }
